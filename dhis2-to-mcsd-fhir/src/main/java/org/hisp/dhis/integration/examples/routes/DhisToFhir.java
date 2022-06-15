@@ -42,11 +42,8 @@ import org.springframework.stereotype.Component;
 import ca.uhn.fhir.context.FhirVersionEnum;
 
 @Component
-@RequiredArgsConstructor
 public class DhisToFhir extends RouteBuilder
 {
-    private final FhirProperties fhirProperties;
-
     @Override
     public void configure()
         throws Exception

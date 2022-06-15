@@ -101,7 +101,15 @@
       <artifactId>camel-fhir-api</artifactId>
       <version>${camel.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.hawt</groupId>
+      <artifactId>hawtio-springboot</artifactId>
+      <version>2.14.1</version>
+    </dependency>
   </dependencies>
 
   <build>

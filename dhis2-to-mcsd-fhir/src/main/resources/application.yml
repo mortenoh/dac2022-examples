@@ -4,3 +4,10 @@ dhis2:
   password: district
 fhir:
   server-url: http://localhost:8081/baseR4
+hawtio:
+  authenticationEnabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include=hawtio,jolokia,camel: false
