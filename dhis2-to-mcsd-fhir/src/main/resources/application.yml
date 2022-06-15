@@ -1,0 +1,6 @@
+dhis2:
+  base-url: https://play.dhis2.org/dev/api
+  username: admin
+  password: district
+fhir:
+  server-url: http://localhost:8081/baseR4
