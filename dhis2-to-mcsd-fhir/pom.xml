@@ -87,6 +87,11 @@
       <version>${camel.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-management</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.hawt</groupId>
       <artifactId>hawtio-springboot</artifactId>
       <version>2.15.0</version>
