@@ -30,16 +30,11 @@ package org.hisp.dhis.integration.examples.routes;
 import java.util.List;
 import java.util.Map;
 
-import lombok.RequiredArgsConstructor;
-
 import org.apache.camel.builder.RouteBuilder;
-import org.hisp.dhis.integration.examples.configuration.FhirProperties;
 import org.hisp.dhis.integration.examples.domain.OrganisationUnit;
 import org.hisp.dhis.integration.examples.domain.OrganisationUnits;
 import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.stereotype.Component;
-
-import ca.uhn.fhir.context.FhirVersionEnum;
 
 @Component
 public class DhisToFhir extends RouteBuilder
@@ -49,6 +44,7 @@ public class DhisToFhir extends RouteBuilder
         throws Exception
     {
         from( "timer:foo?repeatCount=1" )
+            .routeId( "Dhis2-to-mCSD-FHIR" )
             .setHeader( "CamelDhis2.queryParams", () -> Map.of(
                 "order", List.of( "level" ),
                 "paging", List.of( "false" ),
