@@ -27,8 +27,6 @@
  */
 package org.hisp.dhis.integration.examples.converters;
 
-import static org.springframework.util.StringUtils.hasText;
-
 import lombok.RequiredArgsConstructor;
 
 import org.apache.camel.Converter;
@@ -68,7 +66,7 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
             new Identifier().setSystem( baseUrl + "/api/organisationUnits/id" )
                 .setValue( organisationUnit.getId().get() ) );
 
-        if ( organisationUnit.getDataSets().isPresent() )
+        if ( organisationUnit.getCode().isPresent() )
         {
             organization.getIdentifier().add(
                 new Identifier().setSystem( baseUrl + "/api/organisationUnits/code" )
@@ -94,14 +92,14 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
             new Identifier().setSystem( baseUrl + "/api/organisationUnits/id" )
                 .setValue( organisationUnit.getId().get() ) );
 
-        if ( hasText( organisationUnit.getCode().get() ) )
+        if ( organisationUnit.getCode().isPresent() )
         {
             location.getIdentifier().add(
                 new Identifier().setSystem( baseUrl + "/api/organisationUnits/code" )
                     .setValue( organisationUnit.getCode().get() ) );
         }
 
-        if ( organisationUnit.getDataSets().isPresent() )
+        if ( organisationUnit.getDescription().isPresent() )
         {
             location.setDescription( organisationUnit.getDescription().get() );
         }
