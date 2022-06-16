@@ -1,0 +1,83 @@
+{
+  resourceType: "Bundle",
+  type: "transaction",
+  entry: [
+    {
+      request: {
+        method: "PUT",
+        url: "Location?identifier=" + payload.id
+      },
+      resource:
+      {
+        resourceType: "Location",
+        id: payload.id,
+        meta: {
+          profile: [
+            "http: //ihe.net/fhir/StructureDefinition/IHE_mCSD_Location"
+          ]
+        },
+        [if payload.description != null then 'description']: payload.description,
+        identifier: [
+          {
+            system: cml.header("baseUrl"),
+            value: payload.id
+          },
+        ],
+        managingOrganization: {
+          reference: "Organization/" + payload.id
+        },
+        mode: "instance",
+        name: payload.name,
+        [if payload.parent != null then 'partOf']: {
+          reference: "Location/" + payload.id
+        },
+        physicalType: {
+          coding: [
+            {
+              code: "si",
+              system: "http://terminology.hl7.org/CodeSystem/location-physical-type"
+            }
+          ]
+        },
+        status: "active",
+        type: [
+          {
+            text: "OF"
+          }
+        ]
+      }
+    },
+    {
+      request: {
+        method: "PUT",
+        url: "Organization?identifier=" + payload.id
+      },
+      resource: {
+        resourceType: "Organization",
+        id: payload.id,
+        meta: {
+          profile: [
+            "http://ihe.net/fhir/StructureDefinition/IHE_mCSD_Organization"
+          ]
+        },
+        identifier: [
+          {
+            system: cml.header("baseUrl"),
+            value: payload.id
+          },
+        ],
+        name: payload.name,
+        type: [
+          {
+            coding: [
+              {
+                code: "prov",
+                system: "http://terminology.hl7.org/CodeSystem/organization-type"
+              }
+            ]
+          }
+        ],
+      }
+    },
+  ]
+}
