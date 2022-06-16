@@ -35,8 +35,8 @@ import org.apache.camel.Converter;
 import org.apache.camel.Exchange;
 import org.apache.camel.TypeConverters;
 import org.apache.camel.component.fhir.internal.FhirConstants;
+import org.hisp.dhis.api.v2_37_6.model.OrganisationUnit;
 import org.hisp.dhis.integration.examples.configuration.Dhis2Properties;
-import org.hisp.dhis.integration.examples.domain.OrganisationUnit;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -59,20 +59,20 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
 
         // Organization
         Organization organization = new Organization();
-        organization.setId( organisationUnit.getId() );
-        organization.setName( organisationUnit.getName() );
+        organization.setId( organisationUnit.getId().get() );
+        organization.setName( organisationUnit.getName().get() );
 
         String baseUrl = dhis2Properties.getBaseUrl().replace( "/api", "" );
 
         organization.getIdentifier().add(
             new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
-                .setValue( organisationUnit.getId() ) );
+                .setValue( organisationUnit.getId().get() ) );
 
-        if ( hasText( organisationUnit.getCode() ) )
+        if ( organisationUnit.getDataSets().isPresent() )
         {
             organization.getIdentifier().add(
                 new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
-                    .setValue( organisationUnit.getCode() ) );
+                    .setValue( organisationUnit.getCode().get() ) );
         }
 
         organization.addType(
@@ -80,42 +80,42 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
                 new Coding( "http://terminology.hl7.org/CodeSystem/organization-type", "prov", "Facility" ) ) );
 
         bundle.addEntry().setResource( organization ).getRequest().setMethod( Bundle.HTTPVerb.PUT )
-            .setUrl( "Organization?identifier=" + organisationUnit.getId() );
+            .setUrl( "Organization?identifier=" + organisationUnit.getId().get() );
 
         // Location
         Location location = new Location();
-        location.setId( organisationUnit.getId() );
-        location.setName( organisationUnit.getName() );
+        location.setId( organisationUnit.getId().get() );
+        location.setName( organisationUnit.getName().get() );
 
         location.getMeta().getProfile()
             .add( new CanonicalType( "https://ihe.net/fhir/StructureDefinition/IHE_mCSD_Location" ) );
 
         location.getIdentifier().add(
             new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
-                .setValue( organisationUnit.getId() ) );
+                .setValue( organisationUnit.getId().get() ) );
 
-        if ( hasText( organisationUnit.getCode() ) )
+        if ( hasText( organisationUnit.getCode().get() ) )
         {
             location.getIdentifier().add(
                 new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
-                    .setValue( organisationUnit.getCode() ) );
+                    .setValue( organisationUnit.getCode().get() ) );
         }
 
-        if ( hasText( organisationUnit.getDescription() ) )
+        if ( organisationUnit.getDataSets().isPresent() )
         {
-            location.setDescription( organisationUnit.getDescription() );
+            location.setDescription( organisationUnit.getDescription().get() );
         }
         else
         {
-            location.setDescription( organisationUnit.getName() );
+            location.setDescription( organisationUnit.getName().get() );
         }
 
-        location.getManagingOrganization().setReference( "Organization/" + organisationUnit.getId() );
+        location.getManagingOrganization().setReference( "Organization/" + organisationUnit.getId().get() );
         location.setMode( Location.LocationMode.INSTANCE );
 
-        if ( organisationUnit.getParent() != null )
+        if ( organisationUnit.getParent().isPresent() )
         {
-            location.getPartOf().setReference( "Location/" + organisationUnit.getId() );
+            location.getPartOf().setReference( "Location/" + organisationUnit.getId().get() );
         }
 
         location.getPhysicalType().addCoding(
@@ -125,7 +125,7 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
         location.getType().add( new CodeableConcept( new Coding().setCode( "OF" ) ) );
 
         bundle.addEntry().setResource( location ).getRequest().setMethod( Bundle.HTTPVerb.PUT )
-            .setUrl( "Location?identifier=" + organisationUnit.getId() );
+            .setUrl( "Location?identifier=" + organisationUnit.getId().get() );
 
         exchange.getIn().setHeader( FhirConstants.PROPERTY_PREFIX + "bundle", bundle );
 

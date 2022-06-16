@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.hisp.dhis.integration.examples.domain.OrganisationUnit;
-import org.hisp.dhis.integration.examples.domain.OrganisationUnits;
 import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.stereotype.Component;
 
@@ -49,20 +47,11 @@ public class DhisToFhir extends RouteBuilder
                 "order", List.of( "level" ),
                 "paging", List.of( "false" ),
                 "fields", List.of( "id,code,name,description,parent" ) ) )
-            .to( "dhis2://get/resource?path=organisationUnits&client=#dhis2Client" )
-            .unmarshal().json( OrganisationUnits.class )
-            .split().method( new SplitterBean(), "splitOrgUnits" )
+            .to( "dhis2://get/collection?path=organisationUnits&fields=id,code,name,description,parent&itemType=org.hisp.dhis.api.v2_37_6.model.OrganisationUnit&client=#dhis2Client" )
+            .split().body()
             .convertBodyTo( Bundle.class )
             .to( "fhir://transaction/withBundle?client=#fhirClient" )
             .marshal().fhirJson( "R4" )
             .log( "Result = ${body}" );
-    }
-}
-
-class SplitterBean
-{
-    public List<OrganisationUnit> splitOrgUnits( OrganisationUnits organisationUnits )
-    {
-        return organisationUnits.getOrganisationUnits();
     }
 }
