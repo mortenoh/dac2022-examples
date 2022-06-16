@@ -65,13 +65,13 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
         String baseUrl = dhis2Properties.getBaseUrl().replace( "/api", "" );
 
         organization.getIdentifier().add(
-            new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
+            new Identifier().setSystem( baseUrl + "/api/organisationUnits/id" )
                 .setValue( organisationUnit.getId().get() ) );
 
         if ( organisationUnit.getDataSets().isPresent() )
         {
             organization.getIdentifier().add(
-                new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
+                new Identifier().setSystem( baseUrl + "/api/organisationUnits/code" )
                     .setValue( organisationUnit.getCode().get() ) );
         }
 
@@ -91,13 +91,13 @@ public class OrganisationUnitToFhirBundleConverter implements TypeConverters
             .add( new CanonicalType( "https://ihe.net/fhir/StructureDefinition/IHE_mCSD_Location" ) );
 
         location.getIdentifier().add(
-            new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
+            new Identifier().setSystem( baseUrl + "/api/organisationUnits/id" )
                 .setValue( organisationUnit.getId().get() ) );
 
         if ( hasText( organisationUnit.getCode().get() ) )
         {
             location.getIdentifier().add(
-                new Identifier().setSystem( baseUrl + "/api/organisationUnits" )
+                new Identifier().setSystem( baseUrl + "/api/organisationUnits/code" )
                     .setValue( organisationUnit.getCode().get() ) );
         }
 

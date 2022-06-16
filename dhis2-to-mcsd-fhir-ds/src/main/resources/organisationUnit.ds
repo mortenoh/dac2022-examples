@@ -19,9 +19,13 @@
         [if payload.description != null then 'description']: payload.description,
         identifier: [
           {
-            system: cml.header("baseUrl"),
+            system: cml.header("baseUrl") + "/api/organisationUnits/id",
             value: payload.id
           },
+          [if payload.code != null then {
+            system: cml.header("baseUrl") + "/api/organisationUnits/code",
+            value: payload.code
+          }],
         ],
         managingOrganization: {
           reference: "Organization/" + payload.id
@@ -62,9 +66,13 @@
         },
         identifier: [
           {
-            system: cml.header("baseUrl"),
+            system: cml.header("baseUrl") + "/api/organisationUnits/id",
             value: payload.id
           },
+          [if payload.code != null then {
+            system: cml.header("baseUrl") + "/api/organisationUnits/code",
+            value: payload.code
+          }],
         ],
         name: payload.name,
         type: [
