@@ -1,0 +1,16 @@
+dhis2:
+  base-url: https://play.dhis2.org/dev/api
+  username: admin
+  password: district
+fhir:
+  server-url: http://localhost:9090/baseR4
+hawtio:
+  authenticationEnabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hawtio,jolokia
+spring:
+  jmx:
+    enabled: true
