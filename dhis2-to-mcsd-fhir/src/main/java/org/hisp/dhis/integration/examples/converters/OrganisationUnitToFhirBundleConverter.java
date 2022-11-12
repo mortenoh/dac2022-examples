@@ -33,7 +33,7 @@ import org.apache.camel.Converter;
 import org.apache.camel.Exchange;
 import org.apache.camel.TypeConverters;
 import org.apache.camel.component.fhir.internal.FhirConstants;
-import org.hisp.dhis.api.v2_37_6.model.OrganisationUnit;
+import org.hisp.dhis.api.model.v2_38_1.OrganisationUnit;
 import org.hisp.dhis.integration.examples.configuration.Dhis2Properties;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CanonicalType;

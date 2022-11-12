@@ -3,7 +3,7 @@ dhis2:
   username: admin
   password: district
 fhir:
-  server-url: http://localhost:8081/baseR4
+  server-url: http://localhost:9090/baseR4
 hawtio:
   authenticationEnabled: false
 management:
