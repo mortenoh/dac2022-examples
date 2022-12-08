@@ -45,13 +45,15 @@ public class DhisToFhir extends RouteBuilder
             .routeId( "Dhis2-to-mCSD-FHIR" )
             .setHeader( "CamelDhis2.queryParams", () -> Map.of(
                 "order", List.of( "level" ),
-                "paging", List.of( "false" ),
+                "filter", List.of( "level:le:2" ),
                 "fields", List.of( "id,code,name,description,parent" ) ) )
-            .to( "dhis2://get/collection?path=organisationUnits&fields=id,code,name,description,parent&itemType=org.hisp.dhis.api.v2_37_6.model.OrganisationUnit&client=#dhis2Client" )
+            .to( "dhis2://get/collection?path=organisationUnits&fields=id,code,name,description,parent&itemType=org.hisp.dhis.api.model.v2_38_1.OrganisationUnit&client=#dhis2Client" )
             .split().body()
             .convertBodyTo( Bundle.class )
+            // .marshal().fhirJson("R4")
+            // .log( "Result = ${body}" );
             .to( "fhir://transaction/withBundle?client=#fhirClient" )
             .marshal().fhirJson( "R4" )
-            .log( "Result = ${body}" );
+            .log( "Response = ${body}" );
     }
 }
